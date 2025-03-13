@@ -1,26 +1,24 @@
 package main
 
 import (
-	"connector/cdm"
-	"encoding/json"
-	"fmt"
+	"connector/internal/territory"
+	"log"
+	"net/http"
 )
 
-//TIP <p>To run your code, right-click the code and select <b>Run</b>.</p> <p>Alternatively, click
-// the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
-
 func main() {
-	//TIP <p>Press <shortcut actionId="ShowIntentionActions"/> when your caret is at the underlined text
-	// to see how GoLand suggests fixing the warning.</p><p>Alternatively, if available, click the lightbulb to view possible fixes.</p>
-	envelope := cdm.Envelope{
-		FlowId:   "12345",
-		FlowName: "C001",
-	}
+	// Initialize service and handler
+	territoryService := territory.NewTerritoryService()
+	territoryHandler := territory.NewTerritoryHandler(territoryService)
 
-	orderJSON, err := json.Marshal(envelope)
-	if err != nil {
-		fmt.Println("Error marshalling order:", err)
-		return
-	}
-	fmt.Println(string(orderJSON))
+	// Register routes
+	territory.RegisterRoutes(territoryHandler)
+
+	// Start the HTTP server
+	port := ":8080"
+	log.Printf("Server running on port %s", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
+
+// Defines connector scope
+//fun router

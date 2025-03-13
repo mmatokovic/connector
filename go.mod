@@ -1,3 +1,3 @@
-module invoice
+module connector
 
 go 1.24
